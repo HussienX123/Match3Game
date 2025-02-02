@@ -11,10 +11,14 @@ public class GridManagerEditor : Editor
     {
         DrawDefaultInspector();
 
-        GridManager myScript = (GridManager)target;
+        GridManager MyScript = (GridManager)target;
         if (GUILayout.Button("Build Grid"))
         {
-            myScript.BuildGrid();
+            MyScript.BuildGrid();
+        }
+        if (GUILayout.Button("Randomize Grid Items"))
+        {
+            MyScript.RandomizeBlocks();
         }
     }
 }
