@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 9049075840724076263}
   - component: {fileID: 1339679538207445550}
   - component: {fileID: 3829302469904007620}
-  - component: {fileID: 8252576945014142670}
+  - component: {fileID: 8471339674920341693}
   m_Layer: 0
-  m_Name: GreenBlock
+  m_Name: ItemPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4de8a713328cdfa42bdba5654ad697ee, type: 2}
+  - {fileID: 2100000, guid: 374191c87a9458b48a5bea76ae803b3c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,7 +86,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &8252576945014142670
+--- !u!114 &8471339674920341693
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

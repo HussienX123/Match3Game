@@ -125,7 +125,6 @@ public class Tile : MonoBehaviour
 
         Tile UpperTile = GridManager.Instance.GetUpperTile(_Row, _Column);
         Tile CurrentTile = GridManager.Instance.GetTile(_Row, _Column);
-        Tile BottomTile = GridManager.Instance.GetBottomTile(_Row, _Column);
 
         CurrentTile.CurrentBlockIndex = GridManager.Instance.IsMaxRow(_Row) ? Random.Range(0, Items.Length) : CurrentBlockIndex;
 
@@ -158,4 +157,27 @@ public class Tile : MonoBehaviour
     }
     #endregion
 
+    #region Validation
+    [ExecuteInEditMode]
+    private void OnValidate()
+    {
+#if UNITY_EDITOR
+        if(CurrentBlockIndex >= Items.Length)
+        {
+            CurrentBlockIndex = 0;
+            Debug.LogError("CurrentBlockIndex is out of range");
+        }
+
+        if(CurrentBlockIndex > 0 && CurrentBlockIndex < Items.Length)
+        {
+            for (int i = 0; i < Items.Length; i++)
+            {
+                Items[i].gameObject.SetActive(false);
+            }
+
+            Items[CurrentBlockIndex].gameObject.SetActive(true);
+        }
+#endif
+    }
+    #endregion
 }

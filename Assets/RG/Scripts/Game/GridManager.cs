@@ -28,8 +28,10 @@ namespace Hussien
 
         [SerializeField] private float ColumnSpacing = 0f;
 
-        public List<int> CheckRowQueue = new List<int>();
+        private List<int> CheckRowQueue = new List<int>();
+
         private bool CheckingRoutineStarted = false;
+
         private bool CheckingRowStarted = false;
 
         #region Singleton
