@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    private Animator _Animator;
+    [SerializeField] private Animator AnimController;
 
     private void Start()
     {
-        _Animator = GetComponent<Animator>();
+        AnimController = GetComponent<Animator>();
     }
 
-    private void OnEnable()
+    public void PlayDestroyAnimation()
     {
-        if(_Animator != null)
-            _Animator.Play("BlockPOP");
-    }
 
+    }
 }

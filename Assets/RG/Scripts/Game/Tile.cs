@@ -22,6 +22,10 @@ public class Tile : MonoBehaviour
 
     private MeshRenderer _MeshRenderer;
 
+    private AnimationController AnimationController;
+
+    private bool IsFalling = false;
+
     #region Item Generation
     private void Start()
     {
@@ -36,6 +40,7 @@ public class Tile : MonoBehaviour
         }
 
         _MeshRenderer = GetComponent<MeshRenderer>();
+        AnimationController = GetComponent<AnimationController>();
     }
 
     public void SetBlock()
@@ -74,7 +79,7 @@ public class Tile : MonoBehaviour
     }
     #endregion
 
-    #region Grid Position
+    #region Position
     public void SetPosition(int row, int column)
     {
         Row = row;
@@ -85,9 +90,16 @@ public class Tile : MonoBehaviour
     #region Click Gameplay
     public void DestroyBlock()
     {
+        if (IsFalling)
+        {
+            return;
+        }
+
         Tile UpperTile = GridManager.Instance.GetUpperTile(Row, Column);
 
-        Items[CurrentBlockIndex].gameObject.SetActive(false);;
+        Items[CurrentBlockIndex].PlayDestroyAnimation();
+
+        Items[CurrentBlockIndex].gameObject.SetActive(false);
 
         if (UpperTile == null) //this is the top row
         {
@@ -96,35 +108,44 @@ public class Tile : MonoBehaviour
         } 
         else //this is any row except the top row
         {
-            UpperTile.FallBlock(Row , Column);
+            StartCoroutine(UpperTile.FallBlock(Row , Column));
         }
         GridManager.Instance.QueueHorizontalCheck(Row);
         StartCoroutine(ChangeColor());
     }
 
-    public void FallBlock(int _Row, int _Column)
+    IEnumerator FallBlock(int _Row, int _Column)
     {
+        IsFalling = true;
+
         if (Row == 0) //this is the bottom row
         {
-            return;
+            yield return null;
         }
 
         Tile UpperTile = GridManager.Instance.GetUpperTile(_Row, _Column);
-        Tile CurrentBlock = GridManager.Instance.GetTile(_Row, _Column);
+        Tile CurrentTile = GridManager.Instance.GetTile(_Row, _Column);
+        Tile BottomTile = GridManager.Instance.GetTile(_Row - 1, _Column);
 
-        CurrentBlock.CurrentBlockIndex = GridManager.Instance.IsMaxRow(_Row)? Random.Range(0,Items.Length) : CurrentBlockIndex;
+        CurrentTile.CurrentBlockIndex = GridManager.Instance.IsMaxRow(_Row) ? Random.Range(0, Items.Length) : CurrentBlockIndex;
 
-        CurrentBlock.SetBlock();
 
         if (!GridManager.Instance.IsMaxRow(_Row))
         {
             if (UpperTile != null)
             {
-                UpperTile.FallBlock(Row, Column);
+                StartCoroutine(UpperTile.FallBlock(Row, Column));
+                AnimationController.MoveItemAnimation(CurrentTile.AnimationController.GetItemPosition());
             }
         }
 
+        yield return new WaitUntil(() => AnimationController.MoveAnimation == false);
+
+        CurrentTile.SetBlock();
+
         GridManager.Instance.QueueHorizontalCheck(Row);
+
+        IsFalling = false;
     }
 
 

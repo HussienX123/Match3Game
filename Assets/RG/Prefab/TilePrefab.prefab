@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 447534281775357542}
   - component: {fileID: 4000103664175789465}
   - component: {fileID: 7368926844401871340}
+  - component: {fileID: 3810002826571196469}
   - component: {fileID: 5282168567650142229}
   m_Layer: 0
   m_Name: TilePrefab
@@ -165,6 +166,20 @@ MonoBehaviour:
   - {fileID: 3311534185870864249}
   - {fileID: 7988593519193446717}
   - {fileID: 1072296875278658076}
+--- !u!114 &3810002826571196469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5623560900865691030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9be35d1822d79b4483b13edfc939369, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemHolder: {fileID: 6089586766059472589}
+  MoveAnimation: 0
 --- !u!114 &5282168567650142229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +209,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8199435531826217592, guid: f4afec03a88bd6344b57dbbe8ffaef46, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471339674920341693, guid: f4afec03a88bd6344b57dbbe8ffaef46, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9049075840724076263, guid: f4afec03a88bd6344b57dbbe8ffaef46, type: 3}
@@ -296,6 +315,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6089586766059472589}
     m_Modifications:
+    - target: {fileID: 3945069905124330008, guid: b4bc3d802cceb5e47b1a14902d6238da, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8199435531826217592, guid: b4bc3d802cceb5e47b1a14902d6238da, type: 3}
       propertyPath: m_Name
       value: RedBlock
@@ -408,6 +431,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8252576945014142670, guid: 764a082b58f0e2f4b949ef7c67b0cf97, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9049075840724076263, guid: 764a082b58f0e2f4b949ef7c67b0cf97, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -518,6 +545,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8199435531826217592, guid: f4afec03a88bd6344b57dbbe8ffaef46, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8471339674920341693, guid: f4afec03a88bd6344b57dbbe8ffaef46, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9049075840724076263, guid: f4afec03a88bd6344b57dbbe8ffaef46, type: 3}
