@@ -7,11 +7,6 @@ using UnityEngine.UIElements;
 using System;
 using System.Linq;
 
-public struct tiIe
-{
-    public Tile[] tile;
-}
-
 namespace Hussien
 {
     [ExecuteInEditMode]
@@ -26,8 +21,6 @@ namespace Hussien
         [SerializeField] Tile TilePrefab;
 
         [SerializeField] List<Tile> Tiles = new List<Tile>();
-
-        [SerializeField] tiIe[] tilex;
 
         [Header("Spacing Settings")]
 
@@ -64,7 +57,9 @@ namespace Hussien
                 for (int i = 0; i < Tiles.Count; i++)
                 {
                     if (Tiles[i] != null)
+                    {
                         DestroyImmediate(Tiles[i].gameObject);
+                    }
                 }
 
                 Tiles.Clear();
@@ -107,7 +102,7 @@ namespace Hussien
         }
         #endregion
 
-        #region Gameplay Tile Events
+        #region Grid Manipulation Methods 
         public Tile GetUpperTile(int _Row, int _Column)
         {
             if (_Row == Row - 1) //the is the top row
@@ -129,6 +124,15 @@ namespace Hussien
             return Tiles[index];
         }
 
+        public Tile GetBottomTile(int _Row, int _Column)
+        {
+            if (_Row < 0) //the is the bottom row
+                return null;
+
+            int index = (_Row - 1) * Column + _Column;
+            return Tiles[index];
+        }
+
         public bool IsMaxRow(int _Row)
         {
             return _Row == (Row - 1);
@@ -145,6 +149,9 @@ namespace Hussien
 
             return rowTiles;
         }
+        #endregion
+
+        #region Gameplay Tile Events
 
         public void QueueHorizontalCheck(int _Row)
         {
@@ -207,7 +214,7 @@ namespace Hussien
         }
         #endregion
 
-        #region validation
+        #region Validation
         private void OnValidate()
         {
         #if UNITY_EDITOR

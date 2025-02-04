@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField] private Animator AnimController;
-
-    private void Start()
-    {
-        AnimController = GetComponent<Animator>();
-    }
-
-    public void PlayDestroyAnimation()
-    {
-
-    }
+        //Hello you can add any event or code here when the block is destroyed
+        //for example you can add a particle effect or sound effect
+        //or you can add a score to the player
 }

@@ -97,20 +97,20 @@ public class Tile : MonoBehaviour
 
         Tile UpperTile = GridManager.Instance.GetUpperTile(Row, Column);
 
-        Items[CurrentBlockIndex].PlayDestroyAnimation();
-
         Items[CurrentBlockIndex].gameObject.SetActive(false);
 
         if (UpperTile == null) //this is the top row
         {
-            CurrentBlockIndex = Random.Range(0,Items.Length);
+            CurrentBlockIndex = Random.Range(0, Items.Length);
             SetBlock();
         } 
         else //this is any row except the top row
         {
-            StartCoroutine(UpperTile.FallBlock(Row , Column));
+            StartCoroutine(UpperTile.FallBlock(Row, Column));
         }
+
         GridManager.Instance.QueueHorizontalCheck(Row);
+
         StartCoroutine(ChangeColor());
     }
 
@@ -125,7 +125,7 @@ public class Tile : MonoBehaviour
 
         Tile UpperTile = GridManager.Instance.GetUpperTile(_Row, _Column);
         Tile CurrentTile = GridManager.Instance.GetTile(_Row, _Column);
-        Tile BottomTile = GridManager.Instance.GetTile(_Row - 1, _Column);
+        Tile BottomTile = GridManager.Instance.GetBottomTile(_Row, _Column);
 
         CurrentTile.CurrentBlockIndex = GridManager.Instance.IsMaxRow(_Row) ? Random.Range(0, Items.Length) : CurrentBlockIndex;
 
@@ -148,11 +148,12 @@ public class Tile : MonoBehaviour
         IsFalling = false;
     }
 
-
     IEnumerator ChangeColor()
     {
         _MeshRenderer.material.color = Color.red;
+
         yield return new WaitForSeconds(0.5f);
+
         _MeshRenderer.material.color = Color.white;
     }
     #endregion

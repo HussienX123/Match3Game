@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class AnimationController : MonoBehaviour
 {
-    [SerializeField] private Transform ItemHolder;
+    [SerializeField] 
+    private Transform ItemHolder;
 
+    [HideInInspector]
     public bool MoveAnimation = false;
 
     Vector3 TargetTilePosition;
+
     Vector3 StartTilePosition;
 
     private void Start()
@@ -29,9 +32,10 @@ public class AnimationController : MonoBehaviour
 
     private void Update()
     {
-        if (MoveAnimation)
+        if (MoveAnimation == true)
         {
             ItemHolder.position = Vector3.MoveTowards(ItemHolder.position, TargetTilePosition, 12 * Time.deltaTime);
+
             if (ItemHolder.position == TargetTilePosition)
             {
                 ItemHolder.position = StartTilePosition;

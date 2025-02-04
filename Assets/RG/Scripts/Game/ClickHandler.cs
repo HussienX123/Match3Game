@@ -7,7 +7,8 @@ public class ClickHandler : MonoBehaviour
 {
     private Tile MyTile;
 
-    [SerializeField] private UnityEvent OnClickEvent;
+    [SerializeField] 
+    private UnityEvent OnClickEvent;
 
     private void Start()
     {
