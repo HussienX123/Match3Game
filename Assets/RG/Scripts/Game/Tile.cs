@@ -1,9 +1,7 @@
 using Hussien;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Plastic.Newtonsoft.Json.Bson;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Tile : MonoBehaviour
 {
@@ -17,7 +15,7 @@ public class Tile : MonoBehaviour
     [Header("Item Manager")]
 
     [Tooltip("if you want random block leave it at -1 , or choose specific block by typing its index")]
-    [SerializeField] private int CurrentBlockIndex = -1;
+    public int CurrentBlockIndex = -1;
 
     [Tooltip("the child items not the items in the prefab folder")]
     [SerializeField] private Item[] Items;
@@ -29,7 +27,8 @@ public class Tile : MonoBehaviour
     {
         if (CurrentBlockIndex == -1)
         {
-            SetRandomBlock();
+            Tile PreviousTile = GridManager.Instance.GetUpperTile(Row, Column - 1);
+            SetRandomBlock(PreviousTile);
         }
         else
         {
@@ -49,9 +48,18 @@ public class Tile : MonoBehaviour
         Items[CurrentBlockIndex].gameObject.SetActive(true);
     }
 
-    public void SetRandomBlock()
+    public void SetRandomBlock(Tile PreviousTile)
     {
         CurrentBlockIndex = Random.Range(0, Items.Length);
+
+        if (PreviousTile != null)
+        {
+            while (PreviousTile.CurrentBlockIndex == CurrentBlockIndex)
+            {
+                CurrentBlockIndex = Random.Range(0, Items.Length);
+            }
+        }
+
         for (int i = 0; i < Items.Length; i++)
         {
             if (i == CurrentBlockIndex)
@@ -90,7 +98,7 @@ public class Tile : MonoBehaviour
         {
             UpperTile.FallBlock(Row , Column);
         }
-
+        GridManager.Instance.QueueHorizontalCheck(Row);
         StartCoroutine(ChangeColor());
     }
 
@@ -116,47 +124,9 @@ public class Tile : MonoBehaviour
             }
         }
 
-        HorizontalCheck();
+        GridManager.Instance.QueueHorizontalCheck(Row);
     }
 
-    public void HorizontalCheck()
-    {
-        Tile LeftBlock = GridManager.Instance.GetTile(Row, Column - 1);
-        Tile RightBlock = GridManager.Instance.GetTile(Row, Column + 1);
-        Tile LeftLeftBlock = GridManager.Instance.GetTile(Row, Column - 2);
-        Tile RightRightBlock = GridManager.Instance.GetTile(Row, Column + 2);
-
-        if (LeftBlock != null && RightBlock != null)
-        {
-            if (LeftBlock.CurrentBlockIndex == CurrentBlockIndex && RightBlock.CurrentBlockIndex == CurrentBlockIndex)
-            {
-                LeftBlock.DestroyBlock();
-                RightBlock.DestroyBlock();
-                DestroyBlock();
-            }
-        }
-
-        if (LeftLeftBlock != null && LeftBlock != null)
-        {
-            if (LeftLeftBlock.CurrentBlockIndex == CurrentBlockIndex && LeftBlock.CurrentBlockIndex == CurrentBlockIndex)
-            {
-                LeftLeftBlock.DestroyBlock();
-                LeftBlock.DestroyBlock();
-                DestroyBlock();
-            }
-        }
-
-        if (RightRightBlock != null && RightBlock != null)
-        {
-            if (RightRightBlock.CurrentBlockIndex == CurrentBlockIndex && RightBlock.CurrentBlockIndex == CurrentBlockIndex)
-            {
-                RightRightBlock.DestroyBlock();
-                RightBlock.DestroyBlock();
-                DestroyBlock();
-            }
-        }
-
-    }
 
     IEnumerator ChangeColor()
     {

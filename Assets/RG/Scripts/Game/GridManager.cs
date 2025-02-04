@@ -5,6 +5,7 @@ using System.Threading;
 using UnityEditor;
 using UnityEngine.UIElements;
 using System;
+using System.Linq;
 
 public struct tiIe
 {
@@ -33,6 +34,10 @@ namespace Hussien
         [SerializeField] private float RowSpacing = 0f;
 
         [SerializeField] private float ColumnSpacing = 0f;
+
+        public List<int> CheckRowQueue = new List<int>();
+        private bool CheckingRoutineStarted = false;
+        private bool CheckingRowStarted = false;
 
         #region Singleton
         public static GridManager Instance;
@@ -88,7 +93,16 @@ namespace Hussien
             for (int i = 0; i < Tiles.Count; i++)
             {
                 if (Tiles[i] != null)
-                    Tiles[i].SetRandomBlock();  
+                {
+                    if (i == 0)
+                    {
+                        Tiles[i].SetRandomBlock(null);
+                    }
+                    else
+                    {
+                        Tiles[i].SetRandomBlock(Tiles[i - 1]);
+                    }
+                }
             }
         }
         #endregion
@@ -118,6 +132,78 @@ namespace Hussien
         public bool IsMaxRow(int _Row)
         {
             return _Row == (Row - 1);
+        }
+
+        public Tile[] GetTilesInRow(int _Row)
+        {
+            Tile[] rowTiles = new Tile[Column];
+
+            for (int i = 0; i < Column; i++)
+            {
+                rowTiles[i] = GetTile(_Row, i);
+            }
+
+            return rowTiles;
+        }
+
+        public void QueueHorizontalCheck(int _Row)
+        {
+            if (!CheckRowQueue.Contains(_Row))
+            {
+                CheckRowQueue.Add(_Row);
+            }
+
+            if (CheckingRoutineStarted == false)
+            {
+                StartCoroutine(StartHorizontalCheck());
+            } 
+        }
+
+        private IEnumerator StartHorizontalCheck()
+        {
+            CheckingRoutineStarted = true;
+
+            while (CheckRowQueue.Count > 0)
+            {
+                HorizontalCheck(CheckRowQueue[0]);
+                CheckRowQueue.RemoveAt(0);
+                yield return new WaitUntil(() => CheckingRowStarted == false);
+            }
+            CheckingRoutineStarted = false;
+        }
+
+        private void HorizontalCheck(int _Row)
+        {
+            CheckingRowStarted = true;
+            Tile[] HorizontalTiles = GridManager.Instance.GetTilesInRow(_Row);
+
+            int StartIndex = 0;
+            int CurrentBlockIndex = HorizontalTiles[0].CurrentBlockIndex;
+
+            for (int i = 1; i < HorizontalTiles.Length; i++)
+            {
+                if (HorizontalTiles[i].CurrentBlockIndex != CurrentBlockIndex)
+                {
+                    CheckAndProcessGroup(HorizontalTiles, StartIndex, i);
+                    StartIndex = i;
+                    CurrentBlockIndex = HorizontalTiles[i].CurrentBlockIndex;
+                }
+            }
+
+            CheckAndProcessGroup(HorizontalTiles, StartIndex, HorizontalTiles.Length);
+            CheckingRowStarted = false;
+        }
+
+        private void CheckAndProcessGroup(Tile[] tiles, int start, int end)
+        {
+            int GroupLength = end - start;
+            if (GroupLength >= 3)
+            {
+                for (int j = start; j < end; j++)
+                {
+                    tiles[j].DestroyBlock();
+                }
+            }
         }
         #endregion
 
